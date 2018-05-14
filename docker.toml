@@ -1,0 +1,8 @@
+[template]
+src = "iptables-docker.sh.tmpl"
+dest = "/usr/local/bin/iptables.sh"
+keys = ["/mirror/v1/"]
+owner = "root"
+mode = "0750"
+check_cmd = "/bin/bash -n {{.src}} && {{.src}} && {{.src}} >/dev/null && {{.src}} | /sbin/iptables-restore --test"
+reload_cmd = "/usr/local/bin/iptables.sh | /sbin/iptables-restore --counters"
