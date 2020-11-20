@@ -66,6 +66,9 @@ fi
 # Add new chain
 echo -N ${chain}
 
+# Allow related and established
+echo -A ${chain} -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+
 # Allow source IPs
 # Example: echo -A ${chain} -s 10.10.10.10 -j RETURN -m comment --comment "primary:test3.local.lan::"
 for addr in ${static//,/ }; do
