@@ -19,6 +19,8 @@ case "$FW_MODE" in
 esac
 if [[ -n "$ETCD_URL" ]]; then
   ARGS="$ARGS -watch -backend etcd -node $ETCD_URL"
+elif [[ -n "$CLOUDFLARE" ]]; then
+  ARGS="$ARGS -backend file -file /usr/share/cloudflare.yml"
 else
   ARGS="$ARGS -backend env"
 fi

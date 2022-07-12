@@ -69,12 +69,19 @@ echo -N ${chain}
 # Allow related and established
 echo -A ${chain} -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
 
-# Allow source IPs
-# Example: echo -A ${chain} -s 10.10.10.10 -j RETURN -m comment --comment "primary:test3.local.lan::"
+# Allow static IPs
 for addr in ${static//,/ }; do
   echo -A ${chain} -s ${addr} -j RETURN -m comment --comment "static-entry"
 done
-# Dynamically generated entries
+
+# Allow Cloudflare IPs
+{{if eq (getenv "CLOUDFLARE") "1"}}
+  {{range getvs "/cloudflare/*"}}
+echo -A ${chain} -s {{ . }} -j RETURN -m comment --comment "Cloudflare"
+  {{end}}
+{{end}}
+
+# Allow IPs from etcd
 {{if eq (getenv "FW_GRIDS") "*"}}
   {{range $grid := ls "/mirror/v1"}}
     {{range ls (printf "/mirror/v1/%s" $grid)}}

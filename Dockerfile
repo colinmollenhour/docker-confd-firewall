@@ -12,6 +12,7 @@ COPY bin/confd                   /usr/local/bin/
 COPY docker-entrypoint.sh        /
 COPY *.toml                      /etc/confd/configs/
 COPY *.tmpl                      /etc/confd/templates/
+COPY cloudflare.yml              /usr/share/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["confd"]
