@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:buster-slim
 
 # ca-certificates is needed if using SSL but not client certificates
 RUN apt-get update \
