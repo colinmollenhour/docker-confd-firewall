@@ -40,12 +40,12 @@ case "$mode" in
   docker)
     target=DOCKER-USER
     prefix=DOCKER-USER-$service
-    chain=$prefix-$(openssl rand 3 -hex)
+    chain=$prefix-$(openssl rand -hex 3)
   ;;
   host)
     target=INPUT
     prefix=DOCKER-HOST-$service
-    chain=$prefix-$(openssl rand 3 -hex)
+    chain=$prefix-$(openssl rand -hex 3)
   ;;
   *)
     echo "Mode is invalid: '$mode'"
