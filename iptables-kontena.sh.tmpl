@@ -47,14 +47,22 @@ fi
 # Add new chain
 echo -N ${chain}
 
-# Allow source IPs
+# Allow established and outbound traffic
 # Example: echo -A ${chain} -s 10.10.10.10 -j RETURN -m comment --comment "primary:test3.local.lan::"
 echo -A ${chain} -m conntrack --ctstate ESTABLISHED -j RETURN
 echo -A ${chain} -i docker0 -j RETURN -m comment --comment "docker-outbound"
-echo -A ${chain} -s 10.81.0.0/16 -j RETURN -m comment --comment "weave-overlay-network"
+
+# Allow weave traffic
+WEAVE_NET=$(ip route | grep 'dev weave' | awk '{print $1}')
+if [[ -n "$WEAVE_NET" ]]; then
+  echo -A ${chain} -s $WEAVE_NET -j RETURN -m comment --comment "weave-overlay-network"
+fi
+
+# Allow static IPs
 for addr in ${static//,/ }; do
   echo -A ${chain} -s ${addr} -j RETURN -m comment --comment "static-entry"
 done
+
 # Dynamically generated entries
 {{if eq (getenv "FW_GRIDS") "*"}}
   {{range $grid := ls "/mirror/v1"}}
