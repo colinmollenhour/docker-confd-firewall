@@ -20,7 +20,7 @@ esac
 if [[ -n "$ETCD_URL" ]]; then
   ARGS="$ARGS -watch -backend etcd -node $ETCD_URL"
 else
-  ARGS="$ARGS -backend env"
+  ARGS="$ARGS -oneshot -backend env"
 fi
 if [[ $DEBUG -eq 1 ]]; then
   ARGS="$ARGS -log-level debug"
@@ -30,4 +30,10 @@ echo "Starting confd in $FW_MODE mode with args: $@ $ARGS"
 
 # TODO - catch TERM/KILL signal and run `iptables.sh disable` before exiting
 
-exec "$@" $ARGS
+if [[ -n "$ETCD_URL" ]]; then
+  exec "$@" $ARGS
+else
+  "$@" $ARGS
+  /usr/local/bin/iptables.sh | /sbin/iptables-restore --counters
+  exit 0
+fi
