@@ -5,6 +5,9 @@
 # Clear the file so that it will be run on container restart
 >/usr/local/bin/iptables.sh
 
+# Fix issues with iptables-legacy
+update-alternatives --set iptables /usr/sbin/iptables-legacy || true
+
 case "$FW_MODE" in
   docker|host)
     cp /etc/confd/configs/docker.toml /etc/confd/conf.d
