@@ -38,5 +38,6 @@ if [[ -n "$ETCD_URL" ]]; then
 else
   "$@" $ARGS
   /usr/local/bin/iptables.sh | /sbin/iptables-restore --counters
-  exit 0
+  echo "Sleeping forever..."
+  sleep inf
 fi
