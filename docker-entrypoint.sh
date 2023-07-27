@@ -23,7 +23,7 @@ esac
 if [[ -n "$ETCD_URL" ]]; then
   ARGS="$ARGS -watch -backend etcd -node $ETCD_URL"
 else
-  ARGS="$ARGS -oneshot -backend env"
+  ARGS="$ARGS -onetime -backend env"
 fi
 if [[ $DEBUG -eq 1 ]]; then
   ARGS="$ARGS -log-level debug"
