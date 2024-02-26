@@ -16,6 +16,7 @@ etcd host to discover the IP addresses which should be whitelisted while support
 * FW_STATIC - Comma-separated list of IPs/CIDRs to always allow.
 * FW_DENY - Deny behavior, e.g. DROP or REJECT (default: REJECT).
 * FW_DISABLE - With the value "1" the firewall rules will be removed.
+* IPTABLES_NFT - Use "1" if you are using nft on the host. Otherwise iptables-legacy will be used.
 
 
 #### Etcd Data

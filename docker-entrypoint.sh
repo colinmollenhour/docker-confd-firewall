@@ -6,7 +6,9 @@
 >/usr/local/bin/iptables.sh
 
 # Fix issues with iptables-legacy
-update-alternatives --set iptables /usr/sbin/iptables-legacy || true
+if [[ "$IPTABLES_NFT" != "1" ]]; then
+  update-alternatives --set iptables /usr/sbin/iptables-legacy || true
+fi
 
 case "$FW_MODE" in
   docker|host)
